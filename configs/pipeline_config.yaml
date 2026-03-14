@@ -1,0 +1,22 @@
+model_path: "yolov8n.pt"
+input_root: "data/raw"
+output_events_dir: "outputs/events"
+output_videos_dir: "outputs/videos"
+
+confidence_threshold: 0.35
+road_relevant_classes:
+  - person
+  - bicycle
+  - car
+  - motorcycle
+  - bus
+  - truck
+  - traffic light
+  - stop sign
+
+save_annotated_video: true
+pipeline_version: "1.0.0"
+supported_extensions:
+  - ".mp4"
+  - ".mov"
+  - ".avi"
