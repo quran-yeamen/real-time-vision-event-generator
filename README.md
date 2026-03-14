@@ -66,7 +66,9 @@ Each detection becomes a structured event record:
   "class_id": 2,
   "confidence": 0.91
 }
+```
 These events form the raw dataset for further analytics and data processing.
+```json
 
 real-time-vision-event-generator
 │
@@ -92,6 +94,7 @@ real-time-vision-event-generator
     ├── events
     ├── videos
     └── logs
+```
 
 Running the Pipeline
 
