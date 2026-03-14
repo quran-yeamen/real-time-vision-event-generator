@@ -182,4 +182,3 @@ It shows the first step in a larger architecture:
 - **Phase 2:** Ingest raw events into Azure storage  
 - **Phase 3:** Transform and model the data for analytics and dashboards  
 
-That makes this repository more than a vision demo — it is the **front end of a data engineering pipeline**.
