@@ -1,57 +1,64 @@
 # Real-Time Driver Scene Event Generator
 
+A computer vision pipeline that processes **driver point-of-view road video** and converts detections into **structured JSON events** for downstream data engineering and analytics.
+
+---
+
 ## Overview
 
-This project is a computer vision pipeline that processes **driver point-of-view road videos** and converts visual detections into **structured event data**.
+This project is **Phase 1** of a larger end-to-end portfolio pipeline.
 
-Using **YOLOv8**, the system detects objects commonly encountered while driving, such as:
+It takes raw driving footage, runs object detection with **YOLOv8**, filters for road-scene entities, and produces a machine-readable **JSONL event stream** that captures what happened in each frame.
 
-- cars
-- trucks
-- buses
-- motorcycles
-- pedestrians
-- bicycles
-- traffic lights
-- stop signs
-
-Each detection is transformed into a **structured JSON event**, creating a machine-readable event stream that represents what occurred in the driving scene.
-
-This repository represents **Phase 1** of a larger data engineering pipeline.
+The output of this repository is not just annotated video — it is **structured event data** designed to feed the next phase of the system.
 
 ---
 
-# What This Project Does
+## What This Project Does
 
-The pipeline performs the following steps:
+The pipeline:
 
-1. Reads driver POV video files
-2. Runs object detection using YOLOv8
-3. Filters detections relevant to road environments
-4. Converts detections into structured event records
-5. Saves events as JSONL files for downstream processing
-6. Generates annotated output videos for visual validation
+1. Reads driver POV video files  
+2. Runs object detection using **YOLOv8**  
+3. Identifies relevant road-scene objects  
+4. Converts detections into structured event records  
+5. Saves those records as **JSONL files**  
+6. Produces annotated output videos for visual validation  
 
-Pipeline flow:
+### Objects Detected
 
+- Cars
+- Trucks
+- Buses
+- Motorcycles
+- Pedestrians
+- Bicycles
+- Traffic lights
+- Stop signs
+
+---
+
+## Pipeline Flow
+
+```text
 Driver POV Video
-↓
+      ↓
 YOLOv8 Detection
-↓
+      ↓
 Road Scene Objects Identified
-↓
+      ↓
 Structured Detection Events
-↓
+      ↓
 JSONL Event Stream
+```
 
-
-These JSONL files act as **raw event data** that can be processed by downstream data systems.
+These JSONL files act as the **raw event layer** for downstream ingestion, storage, and analytics.
 
 ---
 
-# Example Event Output
+## Example Event Output
 
-Each detection becomes a structured event record:
+Each detection is transformed into a structured event record like this:
 
 ```json
 {
@@ -67,12 +74,17 @@ Each detection becomes a structured event record:
   "confidence": 0.91
 }
 ```
-These events form the raw dataset for further analytics and data processing.
-```json
 
-real-time-vision-event-generator
+This event structure makes the output easy to ingest into cloud pipelines, validate, transform, and analyze later.
+
+---
+
+## Project Structure
+
+```text
+real-time-vision-event-generator/
 │
-├── src
+├── src/
 │   ├── detector.py
 │   ├── pipeline.py
 │   ├── event_schema.py
@@ -80,89 +92,94 @@ real-time-vision-event-generator
 │   ├── utils.py
 │   └── main.py
 │
-├── configs
+├── configs/
 │   └── pipeline_config.yaml
 │
-├── tests
+├── tests/
 │
-├── data
-│   └── raw
-│       ├── normal
-│       └── edge_cases
+├── data/
+│   └── raw/
+│       ├── normal/
+│       └── edge_cases/
 │
-└── outputs
-    ├── events
-    ├── videos
-    └── logs
+└── outputs/
+    ├── events/
+    ├── videos/
+    └── logs/
 ```
 
-Running the Pipeline
+---
 
-Install dependencies:
+## Running the Pipeline
 
+### Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-Run the pipeline:
+### Run the project
 
+```bash
 python -m src.main
+```
 
-The pipeline will:
+### Output generated
 
-scan the data/raw directory for videos
+Running the pipeline will:
 
-run YOLOv8 object detection
+- Scan the `data/raw` directory for video files
+- Run YOLOv8 object detection
+- Generate structured detection events
+- Save results to `outputs/events`
+- Create annotated videos in `outputs/videos`
 
-generate detection events
+---
 
-store results in outputs/events
+## How This Connects to Phase 2
 
-create annotated output videos
+This repository focuses on **event generation**.
 
-How This Connects to Phase 2
+The JSONL files produced here are intended to become the input source for **Phase 2**, where the raw event stream will move into a cloud-based ingestion pipeline.
 
-This project focuses on event generation.
-
-The JSONL event files produced here will become the input data source for Phase 2.
-
-Phase 2 will introduce a cloud ingestion pipeline that:
-
+```text
 Detection Events (JSONL)
-        ↓
+          ↓
 Azure Data Ingestion Pipeline
-        ↓
+          ↓
 Azure Data Lake Storage
-        ↓
+          ↓
 Data Transformation and Analytics
+```
 
-By separating event generation from data ingestion, the system mirrors how many real-world data pipelines are structured.
+This separation is intentional.
 
-Technologies Used
+Phase 1 handles **computer vision and event creation**.  
+Phase 2 will handle **cloud ingestion and raw data storage**.
 
-Python
-
-YOLOv8 (Ultralytics)
-
-OpenCV
-
-Pydantic
-
-PyTest
-
-GitHub Actions
-
+That design mirrors how real-world systems are built: one layer generates operational data, and the next layer moves it into scalable analytics infrastructure.
 
 ---
 
-### Why this version is better for your repo
+## Technologies Used
 
-It:
-
-- focuses on **what this project does**
-- shows **clear pipeline purpose**
-- introduces **Phase 2 naturally**
-- avoids overexplaining the entire system
-- reads like a **real engineering project description**
+- Python
+- YOLOv8 (Ultralytics)
+- OpenCV
+- Pydantic
+- PyTest
+- GitHub Actions
 
 ---
 
-If you want, I can also show you **one tiny README upgrade that makes the repo look significantly mo
+## Why This Project Matters
+
+This project demonstrates how computer vision output can be turned into **structured engineering data** instead of staying trapped inside a model or notebook.
+
+It shows the first step in a larger architecture:
+
+- **Phase 1:** Generate structured road-scene events from video  
+- **Phase 2:** Ingest raw events into Azure storage  
+- **Phase 3:** Transform and model the data for analytics and dashboards  
+
+That makes this repository more than a vision demo — it is the **front end of a data engineering pipeline**.
